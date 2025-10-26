@@ -1,0 +1,21 @@
+services:
+  - type: web
+    runtime: python
+    name: LAND-OF-LIGHT-S
+    plan: free
+    repo: https://github.com/BushraAlasmari09/OpenAI-Python-GPT-4
+    branch: main
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT
+    envVars:
+      - key: PYTHONUNBUFFERED
+        value: "1"
+    autoDeployTrigger: commit
+
+  - type: cron
+    runtime: python
+    name: land-of-light-daily-job
+    schedule: "0 0 * * *"
+    repo: https://github.com/BushraAlasmari09/OpenAI-Python-GPT-4
+    buildCommand: pip install -r requirements.txt
+    startCommand: python scripts/daily.py
