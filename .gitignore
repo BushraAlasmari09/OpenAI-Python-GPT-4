@@ -58,6 +58,7 @@ poetry.lock
 # Zip files
 *.zip
 OpenAI-Python-GPT-4/
+OpenAI-Python-GPT-4 (1).zip
 
 # Testing
 .pytest_cache/
