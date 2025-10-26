@@ -196,9 +196,11 @@ def create_campaign():
             "campaign": campaign
         })
     except Exception as e:
+        # Log the actual error for debugging but don't expose details to users
+        app.logger.error(f"Error creating campaign: {str(e)}")
         return jsonify({
             "success": False,
-            "error": str(e)
+            "error": "حدث خطأ أثناء إنشاء الحملة | An error occurred while creating the campaign"
         }), 500
 
 @app.route('/api/campaigns/<campaign_id>/publish', methods=['POST'])
@@ -238,9 +240,11 @@ def publish_campaign(campaign_id):
             "results": results
         })
     except Exception as e:
+        # Log the actual error for debugging but don't expose details to users
+        app.logger.error(f"Error publishing campaign: {str(e)}")
         return jsonify({
             "success": False,
-            "error": str(e)
+            "error": "حدث خطأ أثناء نشر الحملة | An error occurred while publishing the campaign"
         }), 500
 
 @app.route('/api/generate-content', methods=['POST'])
@@ -258,9 +262,11 @@ def generate_content():
             "content": content
         })
     except Exception as e:
+        # Log the actual error for debugging but don't expose details to users
+        app.logger.error(f"Error generating content: {str(e)}")
         return jsonify({
             "success": False,
-            "error": str(e)
+            "error": "حدث خطأ أثناء توليد المحتوى | An error occurred while generating content"
         }), 500
 
 if __name__ == '__main__':
@@ -269,4 +275,6 @@ if __name__ == '__main__':
         save_campaigns([])
     
     # تشغيل التطبيق
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    # Get debug mode from environment variable (default to False for production)
+    debug_mode = os.environ.get('FLASK_DEBUG', 'False').lower() == 'true'
+    app.run(host='0.0.0.0', port=5000, debug=debug_mode)
