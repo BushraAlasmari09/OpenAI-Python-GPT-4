@@ -1,0 +1,437 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أرض النور - الرياض | لوحة التحكم التسويقية</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)),
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><defs><linearGradient id="sky" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:%23ff9a56;stop-opacity:1" /><stop offset="100%" style="stop-color:%23ffd89b;stop-opacity:1" /></linearGradient></defs><rect fill="url(%23sky)" width="1200" height="600"/><path fill="%23c79b6b" d="M0,400 Q300,380 600,400 T1200,400 L1200,600 L0,600 Z"/><rect fill="%23333" x="900" y="200" width="40" height="200"/><rect fill="%23555" x="950" y="150" width="50" height="250"/><rect fill="%23444" x="1010" y="180" width="35" height="220"/><rect fill="%23666" x="1055" y="120" width="45" height="280"/></svg>');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: #fff;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 30px 20px;
+            background: rgba(0,0,0,0.7);
+            border-radius: 15px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: #ffd89b;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background: rgba(255,255,255,0.95);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            color: #333;
+        }
+
+        .card h2 {
+            color: #ff9a56;
+            margin-bottom: 15px;
+            border-bottom: 3px solid #ff9a56;
+            padding-bottom: 10px;
+        }
+
+        .chat-container {
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+            background: #f5f5f5;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            padding: 12px;
+            border-radius: 10px;
+            max-width: 80%;
+        }
+
+        .user-message {
+            background: #ff9a56;
+            color: white;
+            margin-left: auto;
+            text-align: right;
+        }
+
+        .bot-message {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        .chat-input {
+            display: flex;
+            gap: 10px;
+        }
+
+        input[type="text"], textarea, select {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        button {
+            background: #ff9a56;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background: #ff8040;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255,154,86,0.4);
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .campaigns-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .campaign-item {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 4px solid #ff9a56;
+        }
+
+        .campaign-item h3 {
+            color: #ff9a56;
+            margin-bottom: 8px;
+        }
+
+        .campaign-item p {
+            color: #666;
+            margin: 5px 0;
+            font-size: 14px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .status-draft {
+            background: #ffd89b;
+            color: #333;
+        }
+
+        .status-published {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .platform-tags {
+            margin-top: 8px;
+        }
+
+        .platform-tag {
+            display: inline-block;
+            background: #e0e0e0;
+            padding: 4px 10px;
+            border-radius: 6px;
+            margin-right: 5px;
+            font-size: 12px;
+        }
+
+        .loading {
+            text-align: center;
+            color: #ff9a56;
+            padding: 20px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 8px;
+        }
+
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: normal;
+        }
+
+        @media (max-width: 968px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌟 أرض النور - الرياض</h1>
+            <p class="subtitle">لوحة التحكم التسويقية الذكية | بوت مدعوم بالذكاء الاصطناعي</p>
+        </header>
+
+        <div class="main-grid">
+            <!-- البوت الذكي -->
+            <div class="card">
+                <h2>💬 المرشد السياحي الذكي</h2>
+                <div class="chat-container">
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="message bot-message">
+                            مرحباً بك في أرض النور! 🌟<br>
+                            أنا مرشدك السياحي الذكي. أستطيع مساعدتك في:<br>
+                            ✨ معلومات عن أرض النور<br>
+                            🏜️ الأنشطة السياحية<br>
+                            📍 المواقع والمعالم<br>
+                            🎯 نصائح للزيارة<br><br>
+                            كيف يمكنني مساعدتك اليوم؟
+                        </div>
+                    </div>
+                    <div class="chat-input">
+                        <input type="text" id="userInput" placeholder="اكتب رسالتك هنا..." onkeypress="if(event.key==='Enter') sendMessage()">
+                        <button onclick="sendMessage()">إرسال</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- إنشاء حملة -->
+            <div class="card">
+                <h2>🎯 إنشاء حملة تسويقية</h2>
+                <div class="form-group">
+                    <label>موضوع الحملة:</label>
+                    <input type="text" id="campaignTopic" placeholder="مثال: جولة سياحية في الصحراء">
+                </div>
+                <div class="form-group">
+                    <label>المنصات:</label>
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" value="Instagram" checked> Instagram
+                        </label>
+                        <label>
+                            <input type="checkbox" value="TikTok" checked> TikTok
+                        </label>
+                    </div>
+                </div>
+                <button onclick="createCampaign()">🚀 إنشاء الحملة</button>
+                <div id="generatedContent" style="margin-top: 15px;"></div>
+            </div>
+        </div>
+
+        <!-- قائمة الحملات -->
+        <div class="card">
+            <h2>📊 الحملات التسويقية</h2>
+            <div class="campaigns-list" id="campaignsList">
+                <div class="loading">جاري التحميل...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // إرسال رسالة للبوت
+        async function sendMessage() {
+            const input = document.getElementById('userInput');
+            const message = input.value.trim();
+            if (!message) return;
+
+            const messagesDiv = document.getElementById('chatMessages');
+            
+            // إضافة رسالة المستخدم
+            messagesDiv.innerHTML += `<div class="message user-message">${message}</div>`;
+            input.value = '';
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+            try {
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({message})
+                });
+                const data = await response.json();
+                
+                // إضافة رد البوت
+                messagesDiv.innerHTML += `<div class="message bot-message">${data.reply}</div>`;
+            } catch (error) {
+                messagesDiv.innerHTML += `<div class="message bot-message">عذراً، حدث خطأ. حاول مرة أخرى.</div>`;
+            }
+            
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        // إنشاء حملة جديدة
+        async function createCampaign() {
+            const topic = document.getElementById('campaignTopic').value.trim();
+            if (!topic) {
+                alert('الرجاء إدخال موضوع الحملة');
+                return;
+            }
+
+            const platforms = Array.from(document.querySelectorAll('.checkbox-group input:checked'))
+                .map(cb => cb.value);
+            
+            if (platforms.length === 0) {
+                alert('الرجاء اختيار منصة واحدة على الأقل');
+                return;
+            }
+
+            const contentDiv = document.getElementById('generatedContent');
+            contentDiv.innerHTML = '<div class="loading">جاري إنشاء المحتوى...</div>';
+
+            try {
+                const response = await fetch('/api/campaigns', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({topic, platforms})
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    let content = '<div style="background:#e8f5e9;padding:15px;border-radius:8px;margin-top:10px;">';
+                    content += '<strong>✅ تم إنشاء الحملة بنجاح!</strong><br><br>';
+                    for (const [platform, text] of Object.entries(data.campaign.content)) {
+                        content += `<strong>${platform}:</strong><br>${text}<br><br>`;
+                    }
+                    content += '</div>';
+                    contentDiv.innerHTML = content;
+                    loadCampaigns();
+                    document.getElementById('campaignTopic').value = '';
+                } else {
+                    contentDiv.innerHTML = '<div style="color:red;">حدث خطأ في إنشاء الحملة</div>';
+                }
+            } catch (error) {
+                contentDiv.innerHTML = '<div style="color:red;">حدث خطأ في الاتصال</div>';
+            }
+        }
+
+        // تحميل الحملات
+        async function loadCampaigns() {
+            const listDiv = document.getElementById('campaignsList');
+            
+            try {
+                const response = await fetch('/api/campaigns');
+                const campaigns = await response.json();
+                
+                if (campaigns.length === 0) {
+                    listDiv.innerHTML = '<p style="text-align:center;color:#999;">لا توجد حملات بعد</p>';
+                    return;
+                }
+
+                let html = '';
+                campaigns.reverse().forEach(campaign => {
+                    const statusClass = campaign.status === 'published' ? 'status-published' : 'status-draft';
+                    html += `
+                        <div class="campaign-item">
+                            <h3>${campaign.topic}</h3>
+                            <p><span class="status-badge ${statusClass}">${campaign.status === 'published' ? 'منشورة' : 'مسودة'}</span></p>
+                            <div class="platform-tags">
+                                ${campaign.platforms.map(p => `<span class="platform-tag">${p}</span>`).join('')}
+                            </div>
+                            <p style="font-size:12px;color:#999;margin-top:8px;">تم الإنشاء: ${new Date(campaign.created_at).toLocaleString('ar-SA')}</p>
+                            ${campaign.status === 'draft' ? `<button onclick="publishCampaign('${campaign.id}')" style="margin-top:10px;">📤 نشر الآن</button>` : ''}
+                        </div>
+                    `;
+                });
+                listDiv.innerHTML = html;
+            } catch (error) {
+                listDiv.innerHTML = '<p style="color:red;">حدث خطأ في تحميل الحملات</p>';
+            }
+        }
+
+        // نشر حملة
+        async function publishCampaign(id) {
+            if (!confirm('هل تريد نشر هذه الحملة على المنصات المحددة؟')) return;
+
+            try {
+                const response = await fetch(`/api/campaigns/${id}/publish`, {method: 'POST'});
+                const data = await response.json();
+                
+                if (data.success) {
+                    alert('✅ تم نشر الحملة بنجاح!');
+                    loadCampaigns();
+                } else {
+                    alert('حدث خطأ: ' + data.error);
+                }
+            } catch (error) {
+                alert('حدث خطأ في النشر');
+            }
+        }
+
+        // تحميل الحملات عند فتح الصفحة
+        loadCampaigns();
+    </script>
+</body>
+</html>
