@@ -38,6 +38,21 @@ if (-not (Test-Path ".env")) {
     }
 }
 
+# Helper function to load .env file
+function Load-EnvFile {
+    if (Test-Path ".env") {
+        Get-Content ".env" | ForEach-Object {
+            if ($_ -match '^\s*([^#][^=]+)=(.*)$') {
+                $name = $matches[1].Trim()
+                $value = $matches[2].Trim()
+                [System.Environment]::SetEnvironmentVariable($name, $value, "Process")
+            }
+        }
+        return $true
+    }
+    return $false
+}
+
 # تفعيل البيئة الافتراضية
 Write-Host "تفعيل البيئة الافتراضية..." -ForegroundColor Green
 Write-Host "Activating virtual environment..." -ForegroundColor Green
@@ -46,18 +61,9 @@ $venvActivate = ".\venv\Scripts\Activate.ps1"
 & $venvActivate
 
 # تحميل متغيرات البيئة من .env
-if (Test-Path ".env") {
-    Write-Host "تحميل متغيرات البيئة..." -ForegroundColor Green
-    Write-Host "Loading environment variables..." -ForegroundColor Green
-    
-    Get-Content ".env" | ForEach-Object {
-        if ($_ -match '^\s*([^#][^=]+)=(.*)$') {
-            $name = $matches[1].Trim()
-            $value = $matches[2].Trim()
-            [System.Environment]::SetEnvironmentVariable($name, $value, "Process")
-        }
-    }
-}
+Write-Host "تحميل متغيرات البيئة..." -ForegroundColor Green
+Write-Host "Loading environment variables..." -ForegroundColor Green
+Load-EnvFile | Out-Null
 
 Write-Host ""
 Write-Host "═══════════════════════════════════════════════════════════════════" -ForegroundColor Cyan

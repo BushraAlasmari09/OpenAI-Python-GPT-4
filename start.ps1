@@ -55,6 +55,22 @@ function Write-Warning-Custom {
     Write-Host "⚠ $Text" -ForegroundColor Yellow
 }
 
+function Load-EnvFile {
+    # تحميل متغيرات البيئة من ملف .env
+    # Load environment variables from .env file
+    if (Test-Path ".env") {
+        Get-Content ".env" | ForEach-Object {
+            if ($_ -match '^\s*([^#][^=]+)=(.*)$') {
+                $name = $matches[1].Trim()
+                $value = $matches[2].Trim()
+                [System.Environment]::SetEnvironmentVariable($name, $value, "Process")
+            }
+        }
+        return $true
+    }
+    return $false
+}
+
 # عرض الشعار
 Write-Header "مشروع أرض النور - OpenAI GPT-4 | Ard AlNoor Project"
 
@@ -173,7 +189,7 @@ if (-not $SkipConfig) {
         
         # التحقق من مفتاح API
         $envContent = Get-Content ".env" -Raw
-        if ($envContent -match "OPENAI_API_KEY=sk-") {
+        if ($envContent -match "OPENAI_API_KEY=sk-[a-zA-Z0-9_-]{20,}") {
             Write-Success "مفتاح OpenAI API موجود | OpenAI API key found"
         } else {
             Write-Warning-Custom "مفتاح OpenAI API غير مكتمل! | OpenAI API key not complete!"
@@ -253,19 +269,15 @@ if ($runNow -eq "" -or $runNow -eq "y" -or $runNow -eq "Y") {
     Write-Host "للإيقاف، اضغط Ctrl+C | To stop, press Ctrl+C" -ForegroundColor Yellow
     Write-Host ""
     
-    # تفعيل البيئة مرة أخرى للتأكد
-    & ".\venv\Scripts\Activate.ps1"
+    # تفعيل البيئة الافتراضية إذا لم تكن مفعلة
+    # Activate virtual environment if not already active
+    if (-not $env:VIRTUAL_ENV) {
+        & ".\venv\Scripts\Activate.ps1"
+    }
     
     # تحميل متغيرات البيئة
-    if (Test-Path ".env") {
-        Get-Content ".env" | ForEach-Object {
-            if ($_ -match '^\s*([^#][^=]+)=(.*)$') {
-                $name = $matches[1].Trim()
-                $value = $matches[2].Trim()
-                [System.Environment]::SetEnvironmentVariable($name, $value, "Process")
-            }
-        }
-    }
+    # Load environment variables
+    Load-EnvFile | Out-Null
     
     # تشغيل التطبيق
     python main.py
